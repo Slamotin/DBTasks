@@ -23,12 +23,16 @@ db = client['cars']
 series_collection = db['cars']
 
 if args.manufacture:
-    for r in series_collection.find({'manufacture':args.manufacture}):
+    result = series_collection.find({'manufacture':args.manufacture})
+    print (result.count())
+    for r in result:
         print(r)
 if args.later_then:
-    for r in series_collection.find({'year':int(args.later_then)}):
+    result = series_collection.find({'year':{'$gte':int(args.later_then)}})
+    for r in result:
         print(r)
 if args.optionsByID:
-    for r in series_collection.find({'_id':bson.objectid.ObjectId(args.optionsByID)},{'car_options': 1}):
+    result = series_collection.find({'_id':bson.objectid.ObjectId(args.optionsByID)},{'car_options': 1, '_id': 0})
+    for r in result:
         print(r)
 
